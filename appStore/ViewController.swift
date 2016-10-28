@@ -39,8 +39,14 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
     
     
     
-    
-    
+    func showAppDetailForApp(app: App) {
+        
+        let layout = UICollectionViewFlowLayout()
+        let appDetailController = AppDetailController(collectionViewLayout: layout)
+        appDetailController.app = app
+        
+        navigationController?.pushViewController(appDetailController, animated: true)
+    }
     
     
     
@@ -51,13 +57,15 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
         if (indexPath as NSIndexPath).item == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: largeCellId, for: indexPath) as! LargeCategoryCell
             cell.appCategory = appCategories?[(indexPath as NSIndexPath).item]
+            cell.featuredAppsController = self
             
-            return cell
+            return cell //retrn large Category Cell on row 2
         }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CategoryCell
         
         cell.appCategory = appCategories?[(indexPath as NSIndexPath).item]
+        cell.featuredAppsController = self
         
         return cell
     }
@@ -65,12 +73,14 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
     
     
     
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = appCategories?.count {
-            return count
+            return count // returns number of categories
         }
         return 0
     }
+    
     
     
     
@@ -87,9 +97,11 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
     
     
     
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 120)
     }
+    
     
     
     
@@ -127,7 +139,7 @@ class Header: CategoryCell {
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsetsMake(0, 0, 0, 0) // overide 
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
