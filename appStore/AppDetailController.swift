@@ -13,13 +13,48 @@ class AppDetailController: UICollectionViewController, UICollectionViewDelegateF
     var app: App? {
         didSet {
             
+            if app?.screenshots != nil {
+                return
+            }
+            
+            if let id = app?.id {
+                let urlString = "http://www.statsallday.com/appstore/appdetail?id=\(id)"
+                
+                URLSession.shared.dataTask(with: URL(string: urlString)!, completionHandler: { (data, response, error) -> Void in
+                    
+                    if error != nil {
+                        print(error)
+                        return
+                    }
+                    
+                    do {
+                        let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
+                        
+                        let appDetail = App()
+                        appDetail.setValuesForKeys(json as! [String: AnyObject])
+                        
+                        self.app = appDetail
+                        
+                        DispatchQueue.main.async(execute: { () -> Void in
+                        
+                            self.collectionView?.reloadData()
+                        })
+                    } catch let err {
+                        print(err)
+                    }
+                    
+                }).resume()
+            }
+            
+            
         }
     }
     
     
     
     private let headerId = "headerId"
-    
+    private let cellId = "cellId"
+    private let descriptionCellId = "descriptionCellId"
     
     
     override func viewDidLoad() {
@@ -30,7 +65,76 @@ class AppDetailController: UICollectionViewController, UICollectionViewDelegateF
         collectionView?.backgroundColor = UIColor.white
         
         collectionView?.register(AppDetailHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView?.register(ScreenshotsCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(AppDetailDescriptionCell.self, forCellWithReuseIdentifier: descriptionCellId)
     }
+    
+    
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if indexPath.item == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: descriptionCellId, for: indexPath) as! AppDetailDescriptionCell
+            
+            cell.textView.attributedText = descriptionAtributedText()
+            
+            return cell
+        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ScreenshotsCell
+        
+        cell.app = app
+        
+        return cell
+    }
+    
+    
+    
+    
+    private func descriptionAtributedText() -> NSAttributedString {
+        
+        let attributedText = NSMutableAttributedString(string: "Description\n", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
+        
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 10
+        
+        let range = NSMakeRange(0, attributedText.string.characters.count)
+        attributedText.addAttribute(NSParagraphStyleAttributeName, value: style, range: range)
+        
+        if let desc = app?.desc {
+            attributedText.append(NSAttributedString(string: desc, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 11), NSForegroundColorAttributeName: UIColor.darkGray]))
+        }
+        
+        return attributedText
+    }
+    
+    
+    
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if indexPath.item == 1 {
+            
+            let dummySize = CGSize(width: view.frame.width - 8 - 8, height: 1000)
+            let options = NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin)
+            let rect = descriptionAtributedText().boundingRect(with: dummySize, options: options, context: nil)
+            
+            return CGSize(width: view.frame.width, height: rect.height + 30)
+        }
+        
+        return CGSize(width: view.frame.width, height: 170)
+    }
+    
+    
+    
     
     
     
@@ -47,6 +151,47 @@ class AppDetailController: UICollectionViewController, UICollectionViewDelegateF
         return CGSize(width: view.frame.width, height: 170)
     }
 }
+
+
+
+
+
+
+class AppDetailDescriptionCell: BaseCell {
+    
+    let textView: UITextView = {
+        let tv = UITextView()
+        tv.text = "SAMPLE DESCRIPTION"
+        return tv
+    }()
+    
+    
+    let dividerLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        return view
+    }()
+    
+    
+    
+    
+    override func setupViews() {
+        super.setupViews()
+        
+        addSubview(textView)
+        addSubview(dividerLineView)
+        
+        addConstraintsWithFormat(format: "H:|-8-[v0]-8-|", views: textView)
+        addConstraintsWithFormat(format: "H:|-14-[v0]|", views: dividerLineView)
+        
+        addConstraintsWithFormat(format: "V:|-4-[v0]-4-[v1(1)]|", views: textView, dividerLineView)
+    }
+}
+
+
+
+
+
 
 
 

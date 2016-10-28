@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		997DA6F41DC3489900D1F59C /* ScreenshotsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997DA6F31DC3489900D1F59C /* ScreenshotsCell.swift */; };
 		99C39C451DC0C38D006F242F /* AppDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C39C441DC0C38D006F242F /* AppDetailController.swift */; };
 		99D200811DBFC87A00309973 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D200801DBFC87A00309973 /* CategoryCell.swift */; };
 		99D200831DBFC8EE00309973 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D200821DBFC8EE00309973 /* Models.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		997DA6F31DC3489900D1F59C /* ScreenshotsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotsCell.swift; sourceTree = "<group>"; };
 		99C39C441DC0C38D006F242F /* AppDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDetailController.swift; sourceTree = "<group>"; };
 		99D200801DBFC87A00309973 /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		99D200821DBFC8EE00309973 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -63,8 +65,9 @@
 				99E8BD171DBFBE69009B1099 /* AppDelegate.swift */,
 				99E8BD191DBFBE69009B1099 /* ViewController.swift */,
 				99D200801DBFC87A00309973 /* CategoryCell.swift */,
-				99D200821DBFC8EE00309973 /* Models.swift */,
 				99C39C441DC0C38D006F242F /* AppDetailController.swift */,
+				997DA6F31DC3489900D1F59C /* ScreenshotsCell.swift */,
+				99D200821DBFC8EE00309973 /* Models.swift */,
 				99E8BD1B1DBFBE69009B1099 /* Main.storyboard */,
 				99E8BD1E1DBFBE69009B1099 /* Assets.xcassets */,
 				99E8BD201DBFBE69009B1099 /* LaunchScreen.storyboard */,
@@ -150,6 +153,7 @@
 				99D200811DBFC87A00309973 /* CategoryCell.swift in Sources */,
 				99C39C451DC0C38D006F242F /* AppDetailController.swift in Sources */,
 				99D200831DBFC8EE00309973 /* Models.swift in Sources */,
+				997DA6F41DC3489900D1F59C /* ScreenshotsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
